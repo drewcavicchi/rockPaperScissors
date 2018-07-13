@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Page Title</title>
+</head>
+
+<body>
+  <script>
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min) + min)
+    }
+
+    function capitalize(string) {
+      let firstLetter = string.substr(0, 1).toUpperCase();
+      let restOfString = string.slice(1).toLowerCase();
+      return firstLetter + restOfString;
+    }
+
+    function computerPlay() {
+      // Computer will randomly return Rock, Paper, or scissors
+      let randomNumber = getRandomNumber(1, 4);
+      switch (randomNumber) {
+        case 1:
+          return "Rock";
+          break;
+        case 2:
+          return "Paper";
+          break;
+        case 3:
+          return "Scissors";
+          break;
+      }
+    }
+
+    function playOneRound(playerSelection, computerSelection) {
+      //  Return string "You []! [] Beats []"
+      // let playerSelection = prompt("Rock, paper, or scissors?").toLowerCase();
+      let combinedChoices = (playerSelection + computerSelection).toLowerCase();
+      playerSelection = capitalize(playerSelection);
+      switch (combinedChoices) {
+        case "paperrock":
+        case "rockscissors":
+        case "scissorspaper":
+          // winning cases
+          return "win";
+          break;
+        case "rockrock":
+        case "paperpaper":
+        case "scissorsscissors":
+          return "tie";
+          break;
+        default:
+          // everything else losses
+          return "loss";
+          break;
+      }
+    }
+
+    function game() {
+      let playerScore = 0;
+      let computerScore = 0;
+      let totalScore = 0;
+      while (totalScore < 5) {
+        let playerSelection = prompt("Pick Rock, Paper, or Scissors");
+        let computerSelection = computerPlay();
+        let winAlert = "You won! " + playerSelection + " beats " + computerSelection;
+        let lossAlert = "You lost! " + computerSelection + " beats " + playerSelection;
+        let tieAlert = "It's a tie. You Both Picked " + playerSelection;
+        switch (playOneRound(playerSelection, computerSelection)) {
+          case "win":
+            playerScore = playerScore + 1;
+            totalScore = totalScore + 1;
+            alert(winAlert);
+            break;
+          case "tie":
+            alert(tieAlert);
+            break;
+          case "loss":
+            computerScore = computerScore + 1;
+            totalScore = totalScore + 1;
+            alert(lossAlert);
+            break;
+        }
+      }
+      let finalWinAlert = "You Won! Score: You: " + playerScore + " Computer: " + computerScore;
+      let finalLossAlert = "You Lost! Score: You: " + playerScore + " computer: " + computerScore;
+      return playerScore > 2 ? finalWinAlert : finalLossAlert;
+    }
+  </script>
+</body>
+
+</html>
