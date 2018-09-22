@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="buttons">
+        <button id="rockBtn">Rock</button>
+        <button id="paperBtn">Paper</button>
+        <button id="scissorBtn">Scissors</button>
+    </div>
+    <div id='scorecard'>
+        <div id='scorecardPlayer'></div>
+        <div id='scorecardComputer'></div>
+        <div id='gameResult'></div>
+    </div>
+
+    <script>
+        //initiate scores
+        let playerScore = 0;
+        let computerScore = 0;
+
+        //buttons start game and input selection
+        var rockBtn = document.querySelector('#rockBtn')
+        rockBtn.addEventListener('click', function(){
+            game('Rock');
+        });
+        var paperBtn = document.querySelector('#paperBtn')
+        paperBtn.addEventListener('click', function(){
+            game('Paper');
+        }); 
+        var scissorBtn = document.querySelector('#scissorBtn')
+        scissorBtn.addEventListener('click', function(){
+            game('Scissors');
+        });
+        
+        //creating score tracking and results section in DOM
+
+        const scorecardPlayer = document.querySelector('#scorecardPlayer');
+        const playerScoreContent = document.createElement('div');
+        playerScoreContent.textContent = 'Your Score: 0';
+        playerScoreContent.classList.add('content');
+        scorecardPlayer.appendChild(playerScoreContent);
+        
+        const scorecardComputer = document.querySelector('#scorecardComputer');
+        const computerScoreCont = document.createElement('div');
+        computerScoreCont.textContent = 'Computer Score:0';
+        computerScoreCont.classList.add('content');
+        scorecardComputer.appendChild(computerScoreCont);
+        
+        const gameResult = document.querySelector('#gameResult');
+        const gameResultContent = document.createElement('div');
+        gameResultContent.textContent = 'Press a button to make a selection!';
+        gameResultContent.classList.add('content');
+        gameResult.appendChild(gameResultContent);        
+
+        //simple random number generator, used with random computer selection
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+        
+        //no longer used - created capital letters for player input
+        function capitalize(string) {
+            let firstLetter = string.substr(0, 1).toUpperCase();
+            let restOfString = string.slice(1).toLowerCase();
+            return firstLetter + restOfString;
+        }
+
+        function computerPlay() {
+            // Computer will randomly return Rock, Paper, or scissors
+            let randomNumber = getRandomNumber(1, 4);
+            switch (randomNumber) {
+                case 1:
+                    return "Rock";
+                    break;
+                case 2:
+                    return "Paper";
+                    break;
+                case 3:
+                    return "Scissors";
+                    break;
+            }
+        }
+
+        function playOneRound(playerSelection, computerSelection) {
+            //  Return string "You []! [] Beats []"
+            // let playerSelection = prompt("Rock, paper, or scissors?").toLowerCase();
+            let combinedChoices = (playerSelection + computerSelection).toLowerCase();
+            switch (combinedChoices) {
+                case "paperrock":
+                case "rockscissors":
+                case "scissorspaper":
+                    // winning cases
+                    return "win";
+                    break;
+                case "rockrock":
+                case "paperpaper":
+                case "scissorsscissors":
+                    return "tie";
+                    break;
+                default:
+                    // everything else losses
+                    return "loss";
+                    break;
+            }
+        }
+
+        function game(playerSelection) {
+            // after button press, game starts
+            let computerSelection = computerPlay();
+            let win = "You won! " + playerSelection + " beats " + computerSelection;
+            let loss = "You lost! " + computerSelection + " beats " + playerSelection;
+            let tie = "It's a tie. You Both Picked " + playerSelection;
+            switch (playOneRound(playerSelection, computerSelection)) {
+            // win tie loss records score, changes results text
+                case "win":
+                    playerScore = playerScore + 1;
+                    playerScoreContent.textContent = ('Your Score: ' + playerScore);
+                    scorecardPlayer.appendChild(playerScoreContent);
+                    gameResultContent.textContent = win;
+                    gameResult.appendChild(gameResultContent);
+                    break;
+                case "tie":
+                    gameResultContent.textContent = tie;
+                    gameResult.appendChild(gameResultContent);
+                    break;
+                case "loss":
+                    computerScore = computerScore + 1;
+                    computerScoreCont.textContent = ('Computer Score: ' + computerScore);
+                    scorecardComputer.appendChild(computerScoreCont);
+                    gameResultContent.textContent = loss;
+                    gameResult.appendChild(gameResultContent);
+                    break;
+            }
+        }
+
+
+
+        
+
+    </script>
+</body>
+
+</html>
